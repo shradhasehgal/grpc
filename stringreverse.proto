@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_package = "ex.grpc";
+
+package stringreverse;
+
+// Defines the service
+service StringReverse {
+    // Function invoked to send the request
+    rpc sendRequest (StringRequest) returns (StringReply) {}
+}
+
+// The request message containing requested numbers
+message StringRequest {
+    string a = 1;
+}
+
+// The response message containing response
+message StringReply {
+    string message=1;
+}
