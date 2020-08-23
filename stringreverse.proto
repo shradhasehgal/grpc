@@ -12,10 +12,10 @@ service StringReverse {
 
 // The request message containing requested numbers
 message StringRequest {
-    string a = 1;
+    string original = 1;
 }
 
 // The response message containing response
 message StringReply {
-    string message=1;
+    string reversed = 1;
 }
