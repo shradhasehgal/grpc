@@ -1,29 +1,22 @@
+# Minimum CMake required
 cmake_minimum_required(VERSION 3.15)
+
+# Project
 project(stringreverse)
 
-include(FetchContent)
-
+# Protobuf
 set(protobuf_MODULE_COMPATIBLE TRUE)
-  find_package(Protobuf CONFIG REQUIRED)
-  message(STATUS "Using protobuf ${protobuf_VERSION}")
+find_package(Protobuf CONFIG REQUIRED)
+message(STATUS "Using protobuf ${protobuf_VERSION}")
 
-  set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
-  set(_REFLECTION gRPC::grpc++_reflection)
-  if(CMAKE_CROSSCOMPILING)
-    find_program(_PROTOBUF_PROTOC protoc)
-  else()
-    set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
-  endif()
+# Protobuf-compiler
+set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
 
-  find_package(gRPC CONFIG REQUIRED)
-  message(STATUS "Using gRPC ${gRPC_VERSION}")
-
-  set(_GRPC_GRPCPP gRPC::grpc++)
-  if(CMAKE_CROSSCOMPILING)
-    find_program(_GRPC_CPP_PLUGIN_EXECUTABLE grpc_cpp_plugin)
-  else()
-    set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
-  endif()
+# gRPC
+find_package(gRPC CONFIG REQUIRED)
+message(STATUS "Using gRPC ${gRPC_VERSION}")
+set(_GRPC_GRPCPP gRPC::grpc++)
+set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 
 # Proto file
 get_filename_component(hw_proto "stringreverse.proto" ABSOLUTE)
@@ -47,7 +40,7 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-# Targets greeter_[async_](client|server)
+# Targets (client|server)
 foreach(_target
   client server)
   add_executable(${_target} "${_target}.cc"
